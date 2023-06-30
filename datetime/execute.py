@@ -52,18 +52,17 @@ print(d.strftime("%H:%M:%S"))
 #
 #
 #
-# Get Current month name from date.
 #
-# Difference of 2 date time.quotient and the remainder. (divmod(t1, t2)). and get output of it in Various units. like hours, minutes, Days, months, seconds.
+
 #
-# Get Week number of year by both (Sunday as First Day of week & Monday as First Day of week).
 #
-# Get Day of year from date time. (01,...366).
 #
-# Get Locale’s equivalent of either AM or PM. from Date.
 #
-# Get Datetime with century number and without century number. ie. 2018 & 18.
 #
-# Get Current Date and Print it in various format like DD/MM/YY, YY/MM/DD, MM-DD-YY, DD-MM-YY, YY-DD-MM
+#
+#
+#
+#
+#
 #
 

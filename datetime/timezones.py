@@ -32,5 +32,4 @@ for locality in pytz.all_timezones:
     answer = l.localize(naive,is_dst=None)
     utcdt = answer.astimezone(pytz.utc)
     print(f"CURRENT UTC TIME and DATES based on given time localized as {locality} : ",utcdt)
-    time.sleep(0.002)
-
+    # time.sleep(0.002)
