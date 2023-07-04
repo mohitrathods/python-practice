@@ -21,7 +21,7 @@ Class : Product
 
 ------------- exceL FILES
 master_inventory.xlsx
-Cols : product name, product_sku, vendor name, date of purchase, avg_price, quantity, purchase_price, sale price, avg or purcahse+sale
+Cols : product name, product_sku, vendor name, avg_price, quantity, purchase_price, sale price, avg or purcahse+sale
 
 inventory_movement.xlsx (history)
 Cols : product, date , operation type (option : incoming/outgoing), quantity, price, customer, vendor

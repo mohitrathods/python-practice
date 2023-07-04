@@ -1,23 +1,22 @@
 import os
 import xlsxwriter
-import xlrd,xlwt
+import xlrd
+import xlwt
 import openpyxl
 from openpyxl import load_workbook
+from xlutils.copy import copy
 
 class Product:
-    def __init__(self):
-        pass
-
-    #-------------------------------------------------------------------------------------
-    #create xlsx database/file with fields
+    # -------------------------------------------------------------------------------------
+    # create xlsx database/file with fields
     def createXlDatabase(self):
-        #fields only needed and call this fun only if xl file is not available at location
+        # fields only needed and call this fun only if xl file is not available at location
         path = '/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/'
         files = {
-                'master_inventory.xlsx' : ['product_name','product_sku','quantity','date_of_purchase','purchase_price','total_amount','sales_price','vendor_name'],
-                'purchase.xlsx' : ['product_name','product_sku','quantity','purchase_price','total_amount','total_tax'],
-                'inventory_movement.xlsx' : ['product_name','date_of_changes','quantity_changes','vendor','purchase','sell'],
-                'sales.xlsx' : ['product_name','product_sku','quantity','purchase_price','total_amount','total_tax']
+            'master_inventory.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount', 'vendor_name', 'sales_price'],
+            'purchase.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount', 'total_tax'],
+            'inventory_movement.xlsx': ['product_name', 'date_of_changes', 'quantity_changes', 'vendor', 'purchase', 'sell'],
+            'sales.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount', 'total_tax']
         }
         for file_name,values in files.items():
             if os.path.exists(path+file_name):
@@ -36,27 +35,51 @@ class Product:
                         wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/"+each_file)
                         c += 1
 
-    #-------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------
 
-
-
-
-    #get product input from user
-    sku = 0
+    # get product input from user add this data to main inventory
     def getInput(self):
         self.createXlDatabase()
         product_name = str(input("Enter product name : "))
-        self.sku += 1
         quantity = int(input("Enter quantity : "))
+        sku = str(input("Enter sku : "))
         vendor_name = str(input("Enter vendor name : "))
-        date_of_purchase = str(input("Enter date of purchase : "))
         purchase_price = float(input("Enter purchase price : "))
+        total_amount = purchase_price*quantity
+        sell_price = float(input("Enter selling price : "))
+        arr = [product_name, sku, quantity, purchase_price, total_amount, vendor_name, sell_price]
+        workbook = xlrd.open_workbook("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
+        worksheet = workbook.sheet_by_index(0)
+        nth_row = worksheet.nrows
+        nth_col = worksheet.ncols
+
+        copy_wb = copy(workbook)
+        copy_sheet = copy_wb.get_sheet(0)
+
+        #check each value of sku if matches with input update else add entry
+        for i in range(nth_col):
+            each_sku = worksheet.cell_value(i,1)
+            if each_sku == sku:
+                print("hello! u got it UPDATE data from here")
+
+            else:
+                c = 0
+                for each in arr:
+                    copy_sheet.write(nth_row,c,each)
+                    copy_wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
+                    c+=1
+
+    # -------------------------------------------------------------------------------------
+
+
 
 
 product = Product()
-#add product only one
-ip = int(input("To add product info into master inventory press 1 : "))
+# add product only one
+ip = int(input("To add products(new inventory) into master inventory press 1, press enter to break : "))
 if ip == 1:
     product.getInput()
-else:
-    print("press 1 to add product info")
+    # IF any matches increment data
+    # get all ip
+    # read data from old
+    # match with inputs
