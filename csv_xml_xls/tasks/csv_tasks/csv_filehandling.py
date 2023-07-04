@@ -45,7 +45,7 @@ print('2.Get Partner information by partner name')
 print('3.To show prepared dictionary form CSV file')
 print('Format of Partner Name: "New Partner (0000-9999)"')
 choice = 0
-choice =int(input('Your choice:'))
+choice = int(input('Your choice:'))
 while choice >0:
     if choice == 1:
         partner_name = input('Partner Name:')

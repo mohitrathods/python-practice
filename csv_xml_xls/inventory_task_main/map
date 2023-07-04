@@ -1,0 +1,38 @@
+Start
+check if master_inventory.xlsx exists in location
+    if not create 4 files by default
+--------
+Class Product
+    Add products get input from user
+    Save it in master_inventory.xlsx
+
+    add purchase line in purchase.xlsx
+    cols > vendor, prodduct, purchase_price, tax, total_amopunt
+
+Master_inventory.xlsx
+fields = product name, product_sku, vendor name, date of purchase, avg_price, quantity, purchase_price, sale price
+product name,sku, date of purchase, quantity
+purchase, sale and avg price of product
+vendor name
+
+---------
+Class Purchase
+    if product already exists:
+        add quantity
+
+        add product or update in product.xlsx
+    else:
+        add product in master_inventory.xlsx file with all input columns
+
+        add product or update in purchase.xlsx
+        cols > vendor, prodduct, purchase_price, tax, total_amopunt
+
+    update inventory_movement.xlsx with incoming type of line (i.e. purchase/sale)
+
+    add purchase line in purchase.xlsx
+
+
+----------
+Class Tax_Calculation:
+    calculate : gst, cgst, sgst while purchase
+    xlsx : vendor, prodduct, purchase_price, tax, total_amopunt
