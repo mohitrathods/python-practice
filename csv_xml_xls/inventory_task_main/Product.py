@@ -15,7 +15,7 @@ class Product:
         files = {
             'master_inventory.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount', 'vendor_name', 'sales_price'],
             'purchase.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount', 'total_tax'],
-            'inventory_movement.xlsx': ['product_name', 'date_of_changes', 'quantity_changes', 'vendor', 'purchase', 'sell'],
+            'inventory_movement.xlsx': ['product_name', 'date_of_changes', 'quantity_changes', 'price', 'customer_name', 'vendor','purchase_or_cell'],
             'sales.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount', 'total_tax']
         }
         for file_name,values in files.items():
@@ -40,6 +40,7 @@ class Product:
     # get product input from user add this data to main inventory
     def getInput(self):
         self.createXlDatabase()
+        li=[]
 
         workbook = xlrd.open_workbook("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
         worksheet = workbook.sheet_by_index(0)
@@ -64,12 +65,16 @@ class Product:
 
         if flag:
             print("UPDATE data here")
-            add_qty = float(input(f"You have {x[2].value} quantity in stock : Add more : "))
+            add_qty = float(input(f"You have {x[2].value} quantity in stock > Add more stock > add quantity : "))
             total_qty = x[2].value + add_qty
             final_total = total_qty * x[3].value
             copy_sheet.write(j, 2, total_qty) # row,col,value
             copy_sheet.write(j, 4, final_total) # row,col,value
             copy_wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
+            lastrow = worksheet.row(nth_row-1)
+            for l in lastrow:
+                # print(l.value,type(l.value))
+                li.append(l.value)
 
         if not flag:
             print("ADD NEW DATA")
@@ -83,19 +88,11 @@ class Product:
             c = 0
             for each in arr:
                 copy_sheet.write(nth_row,c,each)
+                li.append(each)
                 c+=1
             copy_wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
+        op = li.copy()
+        li.clear()
+        return op
 
     # -------------------------------------------------------------------------------------
-
-
-
-
-product = Product()
-# add product only one
-while True:
-    ip = int(input("To add products(new inventory) into master inventory press 1, press enter to break : "))
-    if ip == 1:
-        product.getInput()
-    else:
-        break

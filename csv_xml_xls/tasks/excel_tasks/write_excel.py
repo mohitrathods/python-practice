@@ -13,11 +13,11 @@ Class : purchase
 > check if product exists in master file then add quantity and avg price else add product
 
 Class : sales
-> add sale line after sale in sales.xlsx
-> take ip from user > product, customer_name, quantity
+> add sale line after sale in sales.xlsx > minus from master inventory while sell things
+> take ip from user > product_sku, customer_name, quantity
 
 Class : Product
-> add products 
+> add products
 
 ------------- exceL FILES
 master_inventory.xlsx
