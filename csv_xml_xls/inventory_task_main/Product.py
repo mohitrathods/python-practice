@@ -40,14 +40,7 @@ class Product:
     # get product input from user add this data to main inventory
     def getInput(self):
         self.createXlDatabase()
-        product_name = str(input("Enter product name : "))
-        quantity = int(input("Enter quantity : "))
-        sku = str(input("Enter sku : "))
-        vendor_name = str(input("Enter vendor name : "))
-        purchase_price = float(input("Enter purchase price : "))
-        total_amount = purchase_price*quantity
-        sell_price = float(input("Enter selling price : "))
-        arr = [product_name, sku, quantity, purchase_price, total_amount, vendor_name, sell_price]
+
         workbook = xlrd.open_workbook("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
         worksheet = workbook.sheet_by_index(0)
         nth_row = worksheet.nrows
@@ -56,18 +49,42 @@ class Product:
         copy_wb = copy(workbook)
         copy_sheet = copy_wb.get_sheet(0)
 
-        #check each value of sku if matches with input update else add entry
-        for i in range(nth_col):
-            each_sku = worksheet.cell_value(i,1)
-            if each_sku == sku:
-                print("hello! u got it UPDATE data from here")
+        sku = str(input("Enter sku : "))
 
-            else:
-                c = 0
-                for each in arr:
-                    copy_sheet.write(nth_row,c,each)
-                    copy_wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
-                    c+=1
+        flag = False
+        j = 0
+        x = None
+        for i in range(nth_row):
+            eachrow = worksheet.row(i)
+            if eachrow[1].value == sku:
+                flag = True
+                j = i
+                x = eachrow
+                break
+
+        if flag:
+            print("UPDATE data here")
+            add_qty = float(input(f"You have {x[2].value} quantity in stock : Add more : "))
+            total_qty = x[2].value + add_qty
+            final_total = total_qty * x[3].value
+            copy_sheet.write(j, 2, total_qty) # row,col,value
+            copy_sheet.write(j, 4, final_total) # row,col,value
+            copy_wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
+
+        if not flag:
+            print("ADD NEW DATA")
+            product_name = str(input("Enter product name : "))
+            quantity = int(input("Enter quantity : "))
+            vendor_name = str(input("Enter vendor name : "))
+            purchase_price = float(input("Enter purchase price : "))
+            total_amount = purchase_price * quantity
+            sell_price = float(input("Enter selling price : "))
+            arr = [product_name, sku, quantity, purchase_price, total_amount, vendor_name, sell_price]
+            c = 0
+            for each in arr:
+                copy_sheet.write(nth_row,c,each)
+                c+=1
+            copy_wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
 
     # -------------------------------------------------------------------------------------
 
@@ -76,10 +93,9 @@ class Product:
 
 product = Product()
 # add product only one
-ip = int(input("To add products(new inventory) into master inventory press 1, press enter to break : "))
-if ip == 1:
-    product.getInput()
-    # IF any matches increment data
-    # get all ip
-    # read data from old
-    # match with inputs
+while True:
+    ip = int(input("To add products(new inventory) into master inventory press 1, press enter to break : "))
+    if ip == 1:
+        product.getInput()
+    else:
+        break
