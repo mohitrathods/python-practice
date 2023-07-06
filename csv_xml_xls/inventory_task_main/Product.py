@@ -8,6 +8,13 @@ from xlutils.copy import copy
 
 class Product:
 
+    # def testing(self):
+    #     # workbook = xlsxwriter.Workbook(
+    #     #     "/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsux")
+    #     # worksheet = workbook
+    #     # print(worksheet)
+
+
     def add_extra_cols(self):
         wb = xlrd.open_workbook("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/sales.xlsx")
         ws = wb.sheet_by_index(0)
@@ -25,34 +32,32 @@ class Product:
         # fields only needed and call this fun only if xl file is not available at location
         path = '/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/'
         files = {
-            'master_inventory.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount', 'vendor_name', 'sales_price'],
-            'purchase.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount', 'total_tax'],
-            'inventory_movement.xlsx': ['product_name', 'date_of_changes', 'quantity_changes', 'price', 'customer_name', 'vendor','purchase_or_cell'],
-            'sales.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount', 'total_tax']
+            'master_inventory.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount',
+                                      'vendor_name', 'sales_price'],
+            'purchase.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount','CGST','SGST','IGST' 'total_tax'],
+            'inventory_movement.xlsx': ['product_name', 'date_of_changes', 'quantity_changes', 'price', 'customer_name',
+                                        'vendor', 'purchase_or_cell'],
+            'sales.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount','CGST','SGST','IGST' 'total_tax']
         }
-        for file_name,values in files.items():
-            if os.path.exists(path+file_name):
-                if os.path.isfile(path+file_name):
+        for file_name, values in files.items():
+            if os.path.exists(path + file_name):
+                if os.path.isfile(path + file_name):
                     pass
             else:
-                workbook = xlsxwriter.Workbook(path+file_name)
+                workbook = xlsxwriter.Workbook(path + file_name)
+                worksheet = workbook.add_worksheet("Sheet1")
+                c = 0
+                for each in values:
+                    worksheet.write(0, c, each)
+                    c += 1
                 workbook.close()
-
-                for each_file,field_array in files.items():
-                    wb = xlwt.Workbook()
-                    sheet = wb.add_sheet("New Sheet")
-                    c = 0
-                    for i in field_array:
-                        sheet.write(0,c,i)
-                        wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/"+each_file)
-                        c += 1
 
 
     # -------------------------------------------------------------------------------------
 
     # get product input from user add this data to main inventory
     def getInput(self):
-        self.createXlDatabase()
+        # self.createXlDatabase()
         li=[]
 
         workbook = xlrd.open_workbook("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
@@ -117,3 +122,6 @@ class Product:
         return li
 
     # -------------------------------------------------------------------------------------
+
+# prd = Product()
+# prd.createXlDatabase()

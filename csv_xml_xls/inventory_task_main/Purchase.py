@@ -6,24 +6,19 @@ import xlwt
 
 class Purchase():
 
+    def testing(self):
+        # https://products.aspose.com/cells/python-java/conversion/xlsx-to-xlsb/
+        wb = xlrd.open_workbook("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
+        ws = wb.sheet_by_index(0)
+        nth_row = ws.nrows
+        nth_col = ws.ncols
+        copy_wb = copy(wb)
+        copy_sh = copy_wb.get_sheet(0)
+        print(wb)
+
+
     def excel_func(self,workbook):
-        # 3 workbooks to open
-        # get sheet by index each of those
-        # get nth row and col each
-        # copy workbook of each
-        # copy sheet of each
-
-        # workbooks = [
-        #     "/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx",
-        #     "/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/sales.xlsx",
-        #     "/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/inventory_movement.xlsx",
-        #     "/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/purchase.xlsx"
-        # ]
-
-        # excel_functions = []
-        # open each workbook
-        # for each_workbook in workbooks:
-        workbook = xlrd.open_workbook(workbook,on_demand=True)  # open each workbook
+        workbook = xlrd.open_workbook(workbook)  # open each workbook
         worksheet = workbook.sheet_by_index(0)  # get sheet from sheet no
         nth_row = worksheet.nrows  # get nth row
         nth_col = worksheet.ncols  # get nth col
@@ -93,7 +88,7 @@ class Purchase():
                 excel_open_close_movement[5].write(excel_open_close_movement[2],a,o)
                 a += 1
             excel_open_close_movement[4].save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/inventory_movement.xlsx")
-            excel_open_close_movement[0].unload_sheet(0)
+            excel_open_close_movement[0].close()
 
         if not flag:
             print(False)
@@ -108,7 +103,7 @@ class Purchase():
         obj = Product()
         x = obj.getInput()
         # print(x)
-        # update in 2 files : purchase.xls and movement.xls
+        # update in 2 files : purchase.xlsx and movement.xlsx
         # PURCHASE : product_name, sku, quantity, purchase_price(for inventory), total = purchase_price * quantity, tax = 0
         # MOVEMENT : # 'product_name', 'date_of_changes', 'quantity_changes', 'price : at which sold', 'customer_name', 'vendor','purchase_or_cell'
         excel_open_close_purchase = self.excel_func("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/purchase.xlsx")
@@ -152,3 +147,5 @@ elif ip == 4:
     from Product import Product
     obj = Product()
     obj.getInput()
+elif ip == 5:
+    purchase.testing()
