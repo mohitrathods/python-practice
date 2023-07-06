@@ -47,6 +47,7 @@ class Product:
                         wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/"+each_file)
                         c += 1
 
+
     # -------------------------------------------------------------------------------------
 
     # get product input from user add this data to main inventory
@@ -76,6 +77,7 @@ class Product:
                 break
 
         if flag:
+            # print(x)
             li.clear()
             print("UPDATE data here")
             add_qty = float(input(f"You have {x[2].value} quantity in stock > Add more stock > add quantity : "))
@@ -89,9 +91,10 @@ class Product:
             li.append(x[0].value)
             li.append(x[1].value)
             li.append(add_qty)
-            li.append(x[4].value)
-            li.append(add_qty*x[4].value)
+            li.append(x[3].value)
+            li.append(add_qty*x[3].value)
             li.append(x[5].value)
+            # print(li)
 
         if not flag:
             li.clear()
