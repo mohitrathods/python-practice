@@ -7,6 +7,18 @@ from openpyxl import load_workbook
 from xlutils.copy import copy
 
 class Product:
+
+    def add_extra_cols(self):
+        wb = xlrd.open_workbook("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/sales.xlsx")
+        ws = wb.sheet_by_index(0)
+        copyewb = copy(wb)
+        copy_sh = copyewb.get_sheet(0)
+        copy_sh.write(0,5,'CGST')
+        copy_sh.write(0,6,'SGST')
+        copy_sh.write(0,7,'IGST')
+        copy_sh.write(0,8,'Total Tax')
+        copyewb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/sales.xlsx")
+
     # -------------------------------------------------------------------------------------
     # create xlsx database/file with fields
     def createXlDatabase(self):
@@ -64,6 +76,7 @@ class Product:
                 break
 
         if flag:
+            li.clear()
             print("UPDATE data here")
             add_qty = float(input(f"You have {x[2].value} quantity in stock > Add more stock > add quantity : "))
             total_qty = x[2].value + add_qty
@@ -71,12 +84,17 @@ class Product:
             copy_sheet.write(j, 2, total_qty) # row,col,value
             copy_sheet.write(j, 4, final_total) # row,col,value
             copy_wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
-            lastrow = worksheet.row(nth_row-1)
-            for l in lastrow:
-                # print(l.value,type(l.value))
-                li.append(l.value)
+            # what is to be added, append in li and return li
+            # pname, sku, qty(current added), purchase_price(get from master_inventory), total(qty*purchaseprice)
+            li.append(x[0].value)
+            li.append(x[1].value)
+            li.append(add_qty)
+            li.append(x[4].value)
+            li.append(add_qty*x[4].value)
+            li.append(x[5].value)
 
         if not flag:
+            li.clear()
             print("ADD NEW DATA")
             product_name = str(input("Enter product name : "))
             quantity = int(input("Enter quantity : "))
@@ -91,8 +109,8 @@ class Product:
                 li.append(each)
                 c+=1
             copy_wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
-        op = li.copy()
-        li.clear()
-        return op
+        # op = li.copy()
+        # li.clear()
+        return li
 
     # -------------------------------------------------------------------------------------

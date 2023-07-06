@@ -1,13 +1,10 @@
+import datetime
 # import Product
 from xlutils.copy import copy
 import xlrd
 import xlwt
 
 class Purchase():
-
-    # --------------------------------------------- UPDATE PURCHASE FILE
-    def updatePurchase(self):
-        pass
 
     # -----------------------------------------------  SELL FUNC ---------------------------
 
@@ -124,13 +121,17 @@ class Purchase():
             remining_qty = cell[2].value - qty
             final_total = remining_qty * cell[3].value
             excel_functions[0][5].write(j,2,remining_qty)
+            excel_functions[0][5].write(j,2,remining_qty)
             excel_functions[0][5].write(j,4,final_total)
             excel_functions[0][4].save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
 
             # --------------------------------- UPDATE SELL.XLSX FILE
             # --------------------------------- add data to SELL.XLSX file
-            # pname, psku, quantity, purchaseprice = sell p from invenrot, total amounb = sellp * qty
-            sell_arr = [cell[0].value, sku, qty, cell[6].value, qty * cell[6].value, 0]
+            # pname, psku, quantity, purchaseprice = sell p from invenrot, total amounb = sellp * qty, cgst, S, I, total
+            cgst = (qty * cell[3].value * 6)/100
+            igst = (qty * cell[3].value * 18)/100
+            total_tax = (2*cgst) + igst
+            sell_arr = [cell[0].value, sku, qty, cell[6].value, qty * cell[6].value, cgst,cgst,igst,total_tax]
             c = 0
             for s in sell_arr:
                 excel_functions[1][5].write(excel_functions[1][2],c,s)
@@ -140,7 +141,7 @@ class Purchase():
             # --------------------------------- UPDATE SELL.XLSX FILE
             # 'product_name', 'date_of_changes', 'quantity_changes', 'price : at which sold', 'customer_name', 'vendor','purchase_or_cell'
             customer_name = str(input("Enter name of customer : "))
-            movement_arr = [cell[0].value, "05-07-2023", qty, cell[6].value, customer_name, cell[5].value, 'Sell']
+            movement_arr = [cell[0].value, datetime.date.today().strftime("%d-%m-%Y"), qty, cell[6].value, customer_name, cell[5].value, 'Sell']
             a = 0
             for o in movement_arr:
                 excel_functions[2][5].write(excel_functions[2][2],a,o)
@@ -163,8 +164,12 @@ class Purchase():
         # update in 2 files : purchase.xls and movement.xls
         # PURCHASE : product_name, sku, quantity, purchase_price(for inventory), total = purchase_price * quantity, tax = 0
         # MOVEMENT : # 'product_name', 'date_of_changes', 'quantity_changes', 'price : at which sold', 'customer_name', 'vendor','purchase_or_cell'
-        purchase_arr = [x[0],x[1],x[2],x[3],x[2]*x[3],0]
-        movement_arr = [x[0],'05-07-2023',x[2], x[6], 'Inventory manager',x[5],'Purchase']
+        cgst = (x[2]*x[3]*6)/100
+        igst = (x[2]*x[3]*18)/100
+        total_tax = (2*cgst) + igst
+
+        purchase_arr = [x[0],x[1],x[2],x[3],x[2]*x[3],cgst,cgst,igst,total_tax]
+        movement_arr = [x[0],datetime.date.today().strftime("%d-%m-%Y"),x[2], x[4], 'Inventory manager',x[5],'Purchase']
         count = 0
         for each in purchase_arr:
             excel_functions[3][5].write(excel_functions[3][2],count,each)
