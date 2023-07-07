@@ -7,15 +7,14 @@ import xlwt
 class Purchase():
 
     def testing(self):
-        # https://products.aspose.com/cells/python-java/conversion/xlsx-to-xlsb/
-        wb = xlrd.open_workbook("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
-        ws = wb.sheet_by_index(0)
+        wb = xlrd.open_workbook("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/testing/inventory_movement.xls")
+        ws = wb.sheet_by_name('Sheet1') #w1
+
         nth_row = ws.nrows
         nth_col = ws.ncols
-        copy_wb = copy(wb)
-        copy_sh = copy_wb.get_sheet(0)
-        print(wb)
 
+        copy_wb = copy(wb) # make writable copy of opened excel file
+        copy_sh = copy_wb.get_sheet(0) # read the first sheet to withe within writable copy
 
     def excel_func(self,workbook):
         workbook = xlrd.open_workbook(workbook)  # open each workbook
@@ -25,12 +24,11 @@ class Purchase():
         copy_workbook = copy(workbook)  # copy each workbook : FOR SAVE OPERATION
         copy_worksheet = copy_workbook.get_sheet(0)  # copy each worksheet : FOR WRITING OPERATION
         l = [workbook, worksheet, nth_row, nth_col, copy_workbook, copy_worksheet]
-            # excel_functions.append(l)
 
         return l
 
     def sell(self):
-        excel_open_close_master = self.excel_func("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
+        excel_open_close_master = self.excel_func("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xls")
 
         sku = str(input("Enter sku : "))
         flag = False
@@ -56,14 +54,14 @@ class Purchase():
             excel_open_close_master[5].write(j,2,remining_qty)
             excel_open_close_master[5].write(j,2,remining_qty)
             excel_open_close_master[5].write(j,4,final_total)
-            excel_open_close_master[4].save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
-            excel_open_close_master[0].unload_sheet(0)
+            excel_open_close_master[4].save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xls")
+
 
             # --------------------------------- UPDATE SELL.XLSX FILE
             # --------------------------------- add data to SELL.XLSX file
             # pname, psku, quantity, purchaseprice = sell p from invenrot, total amounb = sellp * qty, cgst, S, I, total
             excel_open_close_sales = self.excel_func(
-                "/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/sales.xlsx")
+                "/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/sales.xls")
 
             cgst = (qty * cell[3].value * 6)/100
             igst = (qty * cell[3].value * 18)/100
@@ -73,13 +71,13 @@ class Purchase():
             for s in sell_arr:
                 excel_open_close_sales[5].write(excel_open_close_sales[2],c,s)
                 c += 1
-            excel_open_close_sales[4].save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/sales.xlsx")
-            excel_open_close_sales[0].unload_sheet(0)
+            excel_open_close_sales[4].save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/sales.xls")
+
 
             # --------------------------------- UPDATE SELL.XLSX FILE
             # 'product_name', 'date_of_changes', 'quantity_changes', 'price : at which sold', 'customer_name', 'vendor','purchase_or_cell'
             excel_open_close_movement = self.excel_func(
-                "/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/inventory_movement.xlsx")
+                "/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/inventory_movement.xls")
 
             customer_name = str(input("Enter name of customer : "))
             movement_arr = [cell[0].value, datetime.date.today().strftime("%d-%m-%Y"), qty, cell[6].value, customer_name, cell[5].value, 'Sell']
@@ -87,26 +85,22 @@ class Purchase():
             for o in movement_arr:
                 excel_open_close_movement[5].write(excel_open_close_movement[2],a,o)
                 a += 1
-            excel_open_close_movement[4].save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/inventory_movement.xlsx")
-            excel_open_close_movement[0].close()
+            excel_open_close_movement[4].save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/inventory_movement.xls")
+
 
         if not flag:
             print(False)
-    # -----------------------------------------------  SELL FUNC ---------------------------
 
 
     # -----------------------------------------------  PURCHASE UPDATE DATA FUNC ---------------------------
     def update_purchase(self):
-
-
         print("inside")
         obj = Product()
         x = obj.getInput()
-        # print(x)
         # update in 2 files : purchase.xlsx and movement.xlsx
         # PURCHASE : product_name, sku, quantity, purchase_price(for inventory), total = purchase_price * quantity, tax = 0
         # MOVEMENT : # 'product_name', 'date_of_changes', 'quantity_changes', 'price : at which sold', 'customer_name', 'vendor','purchase_or_cell'
-        excel_open_close_purchase = self.excel_func("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/purchase.xlsx")
+        excel_open_close_purchase = self.excel_func("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/purchase.xls")
 
         cgst = (x[2]*x[3]*6)/100
         igst = (x[2]*x[3]*18)/100
@@ -118,20 +112,16 @@ class Purchase():
         for each in purchase_arr:
             excel_open_close_purchase[5].write(excel_open_close_purchase[2],count,each)
             count += 1
-        excel_open_close_purchase[4].save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/purchase.xlsx")
-        excel_open_close_purchase[0].unload_sheet(0)
+        excel_open_close_purchase[4].save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/purchase.xls")
 
-        excel_open_close_movement = self.excel_func("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/inventory_movement.xlsx")
+
+        excel_open_close_movement = self.excel_func("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/inventory_movement.xls")
         counter = 0
         for each_item in movement_arr:
             excel_open_close_movement[5].write(excel_open_close_movement[2], counter, each_item)
             counter += 1
         excel_open_close_movement[4].save(
-            "/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/inventory_movement.xlsx")
-        excel_open_close_movement[0].unload_sheet(0)
-
-
-    # -----------------------------------------------  PURCHASE UPDATE DATA FUNC ---------------------------
+            "/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/inventory_movement.xls")
 
 
 purchase = Purchase()
@@ -147,5 +137,5 @@ elif ip == 4:
     from Product import Product
     obj = Product()
     obj.getInput()
-elif ip == 5:
-    purchase.testing()
+# elif ip == 5:
+#     purchase.testing()

@@ -8,15 +8,8 @@ from xlutils.copy import copy
 
 class Product:
 
-    # def testing(self):
-    #     # workbook = xlsxwriter.Workbook(
-    #     #     "/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsux")
-    #     # worksheet = workbook
-    #     # print(worksheet)
-
-
     def add_extra_cols(self):
-        wb = xlrd.open_workbook("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/sales.xlsx")
+        wb = xlrd.open_workbook("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/sales.xls")
         ws = wb.sheet_by_index(0)
         copyewb = copy(wb)
         copy_sh = copyewb.get_sheet(0)
@@ -24,7 +17,7 @@ class Product:
         copy_sh.write(0,6,'SGST')
         copy_sh.write(0,7,'IGST')
         copy_sh.write(0,8,'Total Tax')
-        copyewb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/sales.xlsx")
+        copyewb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/sales.xls")
 
     # -------------------------------------------------------------------------------------
     # create xlsx database/file with fields
@@ -32,25 +25,28 @@ class Product:
         # fields only needed and call this fun only if xl file is not available at location
         path = '/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/'
         files = {
-            'master_inventory.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount',
+            'master_inventory.xls': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount',
                                       'vendor_name', 'sales_price'],
-            'purchase.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount','CGST','SGST','IGST' 'total_tax'],
-            'inventory_movement.xlsx': ['product_name', 'date_of_changes', 'quantity_changes', 'price', 'customer_name',
+            'purchase.xls': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount','CGST','SGST','IGST', 'total_tax'],
+            'inventory_movement.xls': ['product_name', 'date_of_changes', 'quantity_changes', 'price', 'customer_name',
                                         'vendor', 'purchase_or_cell'],
-            'sales.xlsx': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount','CGST','SGST','IGST' 'total_tax']
+            'sales.xls': ['product_name', 'product_sku', 'quantity', 'purchase_price', 'total_amount','CGST','SGST','IGST', 'total_tax']
         }
         for file_name, values in files.items():
             if os.path.exists(path + file_name):
                 if os.path.isfile(path + file_name):
                     pass
             else:
-                workbook = xlsxwriter.Workbook(path + file_name)
-                worksheet = workbook.add_worksheet("Sheet1")
+                # workbook = xlsxwriter.Workbook(path + file_name)
+                # worksheet = workbook.add_worksheet("Sheet1")
+                #WITH XLWT
+                wb = xlwt.Workbook(encoding='utf8')
+                sh = wb.add_sheet("Sheet1")
                 c = 0
                 for each in values:
-                    worksheet.write(0, c, each)
+                    sh.write(0, c, each)
                     c += 1
-                workbook.close()
+                wb.save(path+file_name)
 
 
     # -------------------------------------------------------------------------------------
@@ -60,7 +56,7 @@ class Product:
         # self.createXlDatabase()
         li=[]
 
-        workbook = xlrd.open_workbook("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
+        workbook = xlrd.open_workbook("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xls")
         worksheet = workbook.sheet_by_index(0)
         nth_row = worksheet.nrows
         nth_col = worksheet.ncols
@@ -90,7 +86,7 @@ class Product:
             final_total = total_qty * x[3].value
             copy_sheet.write(j, 2, total_qty) # row,col,value
             copy_sheet.write(j, 4, final_total) # row,col,value
-            copy_wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
+            copy_wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xls")
             # what is to be added, append in li and return li
             # pname, sku, qty(current added), purchase_price(get from master_inventory), total(qty*purchaseprice)
             li.append(x[0].value)
@@ -116,7 +112,7 @@ class Product:
                 copy_sheet.write(nth_row,c,each)
                 li.append(each)
                 c+=1
-            copy_wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xlsx")
+            copy_wb.save("/home/setu/PycharmProjects/python-practice/csv_xml_xls/inventory_task_main/data/master_inventory.xls")
         # op = li.copy()
         # li.clear()
         return li
