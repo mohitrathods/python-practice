@@ -22,19 +22,20 @@ take all things as element add it into master record dataset
 T5 for no. 3 : DELETE ITEM FROM DATASET
 
 """
-master_db = [] # [{},{},{}]
-master_dataset = [] # (0,0,{}), (0,0,{}), (0,0,{})
-
+dictionary = [{'id': 1, 'name': '1', 'quantity': 1.0}, {'id': 2, 'name': '2', 'quantity': 2.0}, {'id': 3, 'name': '3', 'quantity': 3.0}, {'id': 4, 'name': '4', 'quantity': 4.0}, {'id': 5, 'name': '5', 'quantity': 5.0}] # [{},{},{}]
+dataset = [(0, 0, {'id': 1, 'name': '1', 'quantity': 1.0}), (0, 0, {'id': 2, 'name': '2', 'quantity': 2.0}), (0, 0, {'id': 3, 'name': '3', 'quantity': 3.0})] # (0,0,{}), (0,0,{}), (0,0,{})
+# dictionary = [] # [{},{},{}]
+# dataset = [] # (0,0,{}), (0,0,{}), (0,0,{})
 # ----------------------------------- ----  common function
-# def break_loop(keyword):
-#     ip = str(input(f"press 9 to break and perform other operations press enter to continue {keyword} data\n"))
-#     try:
-#         if ip == '9':
-#             print("Master dataset : ", master_dataset)
-#             print("Master DB : ", master_db)
-#             break
-#     except KeyboardInterrupt:
-#         pass
+def break_loop(keyword):
+    ip = str(input(f"press 9 to break and perform other operations press enter to continue {keyword} data\n"))
+    try:
+        if ip == '9':
+            print("Master dataset : ", dataset)
+            print("Dictionary : ", dictionary)
+            return True
+    except KeyboardInterrupt:
+        pass
 
 # ----------------------------------------- add data to both dataset
 def zero(command):
@@ -44,125 +45,123 @@ def zero(command):
         name = str(input("\nEnter product name : "))
         quantity = float(input("\nEnter product quantity : "))
         ele = (command,0,{'id':id, 'name': name, 'quantity' : quantity})
-        master_dataset.append(ele)
-        master_db.append(ele[2])
+        dataset.append(ele)
+        dictionary.append(ele[2])
+        print("data added\n")
 
-        ip = str(input("press 9 to break and perform other operations press enter to continue adding data\n"))
-        try:
-            if ip == '9':
-                print("Master dataset : ",master_dataset)
-                print("Master DB : ",master_db)
-                break
-        except KeyboardInterrupt:
-            pass
+        if break_loop('adding'):
+            break
+        # x = break_loop('adding')
+        # if x:
+        #     break
 
 # ----------------------------------------- with update id add into both database
 def one(command):
     while True:
-        print("Enter product_id, name and quantity with update_id : \n")
+        print("Enter product_id, name and quantity and update_id to update data : \n")
         update_id = int(input("Enter update id : "))
-        id = int(input("Enter product id : "))
+        # id = int(input("Enter new product id : "))
         name = str(input("\nEnter product name : "))
         quantity = float(input("\nEnter product quantity : "))
-        ele = (command, update_id, {'id': id, 'name': name, 'quantity': quantity})
-        master_dataset.append(ele)
-        master_db.append(ele[2])
-
-        ip = str(input("press 9 to break and perform other operations press enter to continue adding data\n"))
-        try:
-            if ip == '9':
-                print("Master dataset : ", master_dataset)
-                print("Master DB : ", master_db)
+        for i in dictionary:
+            if i['id'] == update_id:
+                i['name'] = name
+                i['quantity'] = quantity
+                print("data updated")
                 break
-        except KeyboardInterrupt:
-            pass
+            else:
+                pass
 
-# ------------------------------------ list of tuples by user
-def four(command):
-    while True:
-        print("Enter no to add tuple in database and dataset : \n")
-        ip = int(input("enter no : "))
-        ele = (command, ip)
-        master_db.append(ele)
-
-        ip = str(input("press 9 to break and perform other operations press enter to continue adding data\n"))
-        try:
-            if ip == '9':
-                print("Master dataset : ", master_dataset)
-                print("Master DB : ", master_db)
-                break
-        except KeyboardInterrupt:
-            pass
+        if break_loop('update'):
+            break
 
 # ---------------------------------------- to remove data based on id from MASTER_DICT dataset
 def two(command):
     while True:
-        id = int(input("enter id to delete dictionary from master list of dictionary : "))
+        id = int(input("enter id to delete dictionary list of dictionary : "))
         ele = (command,id,False)
-        master_dataset.append(ele)
-        for i in master_db:
+        dataset.append(ele)
+        for i in dictionary:
             if i.get('id') == id:
-                master_db.remove(i)
+                dictionary.remove(i)
             if not i.get('id'):
                 print("ID not found\n")
 
-        ip = str(input("press 9 to break and perform other operations press enter to continue deleting data\n"))
-        try:
-            if ip == '9':
-                print("Master dataset : ", master_dataset)
-                print("Master DB : ", master_db)
-                break
-        except KeyboardInterrupt:
-            pass
+        if break_loop('deleting'):
+            break
 
 # ---------------------------------------- to remove data based on id from MASTER_RECORD dataset
 def three(command):
     while True:
         id = int(input("enter id to delete dataset from master list of dataset : "))
         ele = (command, id, False)
-        master_dataset.append(ele)
-        for i in master_db:
-            if i.get('id') == id:
-                del master_dataset[id]
-            else:
-                print("Id not found\n")
-
-        ip = str(input("press 9 to break and perform other operations press enter to continue deleting data\n"))
-        try:
-            if ip == '9':
-                print("Master dataset : ", master_dataset)
-                print("Master DB : ", master_db)
+        dataset.append(ele)
+        for i in dataset:
+            x = i[2]['id']
+            if x == id:
+                dataset.remove(i)
                 break
-        except KeyboardInterrupt:
-            pass
+            else:
+                print("id not found")
+                break
+        print(dataset)
+
+        if break_loop('deleting'):
+            break
+
+# ------------------------------------ list of tuples by user
+def four(command):
+    while True:
+        print("Enter no to add tuple in dataset : \n")
+        ip = int(input("enter no : "))
+        ele = (command, ip)
+        dataset.append(ele)
+
+        if break_loop('adding'):
+            break
+
 
 # --------------------------------------- to remove all vals from MASTER_DICT_DATASET
 def five(command):
-    if master_dataset:
-        master_dataset.clear()
-        print(f"dataset cleared : {master_dataset}")
+    if dataset:
+        dataset.clear()
+        print(f"dataset cleared : {dataset}")
     else:
-        print(f"dataset is already empty\n Master dataset : {master_dataset}")
+        print(f"dataset is already empty\n Master dataset : {dataset}")
 
 def six():
-    print(master_dataset)
-    print(master_db)
+    print(dataset)
+    print(dictionary)
 
 def seven(command):
-    input_li = str(input("enter numbers seprated by comma : "))
-    li = input_li.split(',')
-    for i in li:
-        master_dataset.remove(i)
-    print(master_db)
+    while True:
+        input_li = str(input("enter numbers seprated by comma : "))
+        li = input_li.split(',')
+        fl = []
+        for l in li:
+            fl.append(int(l))
+        ele = (command,'_',fl)
+        dataset.append(ele)
+
+        for i in fl:
+            for di in dictionary:
+                if di['id'] == i:
+                    dictionary.remove(di)
+                    print("reached")
+        print(dictionary)
+        print(dataset)
+
+        if break_loop('deleting'):
+            break
 
 while True:
-    print("Master dataset : ", master_dataset)
-    print("Master DB : ", master_db)
+    print("Master dataset : ", dataset)
+    print("Dictionary : ", dictionary)
     n = int(input("Enter 0 to insert data into datasets\n "
                   "Enter 1 to add data into dataset with updated_id\n "
-                  "Enter 2 to delete specific dictionary from master dictionary dataset\n "
+                  "Enter 2 to delete specific dictionary from dictionary dataset\n "
                   "Enter 3 to delete specific dictionary from master records dataset\n "
-                  "Enter 4 to add tuples in both datasets\n "
+                  "Enter 4 to add tuples items in dataset\n "
                   "Enter 5 to empty the master dataset list\n "
                   "Enter 6 to display datasets\n "
                   "Enter 7 give a list of IDs and remove other values then IDs from master database dictionary\n "
