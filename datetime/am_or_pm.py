@@ -6,6 +6,7 @@ import datetime,time
 t = time.localtime()
 curr = time.strftime("%H",t)
 print(type(curr))
+print(curr)
 i = int(curr)
 if i > 12 and i <= 24:
     print("PM")

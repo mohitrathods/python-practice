@@ -48,4 +48,4 @@ print(unique_list)
 n = filter(lambda ele : ele < 0,listttt)
 
 # n = filter(lambda ele : ele if ele < 0 else listttt.remove(ele) if ele in listttt else print(" "),listttt)
-print(list(n))
+print(list(n)) 

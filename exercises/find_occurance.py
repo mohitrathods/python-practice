@@ -2,4 +2,6 @@
 from collections import Counter
 ip = "hehellosnonlksdfrdcccc"
 x = Counter(ip)
-sorted(x.values())print(sorted(x))
+sorted(x.values())
+print(sorted(x))
+print(x)
