@@ -1,0 +1,3 @@
+-- TOTAL 466 RECORDS
+
+SELECT * FROM salaryinfo
